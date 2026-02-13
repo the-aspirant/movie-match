@@ -58,63 +58,55 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 md:px-6 py-6 md:py-8" style={{ minHeight: '100dvh' }}>
-      <div className="max-w-md w-full">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 md:px-6 py-8 md:py-12" style={{ minHeight: '100dvh' }}>
+      <div className="max-w-md w-full flex-shrink-0">
         {mode === 'welcome' && (
-          <div className="text-center space-y-6 md:space-y-8 animate-in fade-in duration-500">
+          <div className="text-center space-y-8 md:space-y-10 animate-in fade-in duration-500">
+            {/* Hero icon */}
+            <div className="text-7xl md:text-8xl">🎬</div>
+
             {/* Header */}
-            <div className="space-y-3 md:space-y-4">
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-coral-500 blur-2xl opacity-30 animate-pulse" />
-                  <h1 className="relative text-4xl md:text-6xl font-display font-bold bg-gradient-to-r from-amber-400 to-coral-400 bg-clip-text text-transparent">
-                    Movie Match
-                  </h1>
-                </div>
-              </div>
-              <p className="text-warmLight/80 text-base md:text-lg">
+            <div className="space-y-3">
+              <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-amber-400 to-coral-400 bg-clip-text text-transparent">
+                Movie Match
+              </h1>
+              <p className="text-warmLight/80 text-lg md:text-xl">
                 Swipe together. Watch together.
               </p>
-              <p className="text-warmLight/60 text-sm max-w-md mx-auto px-2">
-                Like Tinder, but for deciding what to watch tonight. 
-                Both swipe, only matches show.
+              <p className="text-warmLight/50 text-sm max-w-xs mx-auto">
+                Like Tinder, but for deciding what to watch tonight.
               </p>
-            </div>
-
-            {/* Decorative element */}
-            <div className="flex justify-center gap-2">
-              <div className="w-16 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent rounded-full" />
             </div>
 
             {/* Action buttons */}
-            <div className="space-y-3 md:space-y-4">
+            <div className="space-y-3 pt-4">
               <button
                 onClick={() => setMode('create')}
-                className="btn-primary w-full text-base md:text-lg"
+                className="btn-primary w-full text-lg"
               >
                 Create Room
               </button>
               <button
                 onClick={() => setMode('join')}
-                className="btn-secondary w-full text-base md:text-lg"
+                className="btn-secondary w-full text-lg"
               >
                 Join Room
               </button>
             </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-3 gap-3 md:gap-4 pt-6 md:pt-8 text-center">
-              <div className="space-y-1.5 md:space-y-2">
-                <div className="text-2xl md:text-3xl">🎬</div>
-                <p className="text-[10px] md:text-xs text-warmLight/60">Browse Movies</p>
+            {/* How it works */}
+            <div className="grid grid-cols-3 gap-4 pt-4 text-center">
+              <div className="space-y-2">
+                <div className="text-3xl">💕</div>
+                <p className="text-xs text-warmLight/50">Both swipe</p>
               </div>
-              <div className="space-y-1.5 md:space-y-2">
-                <div className="text-2xl md:text-3xl">💕</div>
-                <p className="text-[10px] md:text-xs text-warmLight/60">Match Together</p>
+              <div className="space-y-2">
+                <div className="text-3xl">✨</div>
+                <p className="text-xs text-warmLight/50">Find matches</p>
               </div>
-              <div className="space-y-1.5 md:space-y-2">
-                <div className="text-2xl md:text-3xl">🍿</div>
-                <p className="text-[10px] md:text-xs text-warmLight/60">Watch Tonight</p>
+              <div className="space-y-2">
+                <div className="text-3xl">🍿</div>
+                <p className="text-xs text-warmLight/50">Watch tonight</p>
               </div>
             </div>
           </div>

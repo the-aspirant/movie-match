@@ -26,6 +26,7 @@ export default function Home() {
       const code = await createRoom(selectedServices);
       router.push(`/room/${code}`);
     } catch (err) {
+      console.error('Create room error:', err);
       setError('Failed to create room. Please try again.');
       setLoading(false);
     }
@@ -58,169 +59,140 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 md:px-6 py-8 md:py-12" style={{ minHeight: '100dvh' }}>
-      <div className="max-w-md w-full flex-shrink-0">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12" style={{ minHeight: '100dvh' }}>
+      <div className="w-full max-w-sm">
+
+        {/* ── WELCOME ── */}
         {mode === 'welcome' && (
-          <div className="text-center space-y-8 md:space-y-10 animate-in fade-in duration-500">
-            {/* Hero icon */}
-            <div className="text-7xl md:text-8xl">🎬</div>
+          <div className="flex flex-col items-center">
+            {/* Hero — big, breathing, unmissable */}
+            <div className="text-8xl mb-8">🎬</div>
 
-            {/* Header */}
-            <div className="space-y-3">
-              <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-amber-400 to-coral-400 bg-clip-text text-transparent">
-                Movie Match
-              </h1>
-              <p className="text-warmLight/80 text-lg md:text-xl">
-                Swipe together. Watch together.
-              </p>
-              <p className="text-warmLight/50 text-sm max-w-xs mx-auto">
-                Like Tinder, but for deciding what to watch tonight.
-              </p>
-            </div>
+            <h1 className="text-6xl font-display font-bold bg-gradient-to-r from-amber-400 via-coral-400 to-amber-400 bg-clip-text text-transparent text-center leading-tight">
+              Movie<br/>Match
+            </h1>
 
-            {/* Action buttons */}
-            <div className="space-y-3 pt-4">
+            <p className="mt-4 text-warmLight/70 text-lg text-center leading-relaxed">
+              Swipe together. Watch together.
+            </p>
+
+            {/* CTA buttons — generous spacing, clear hierarchy */}
+            <div className="w-full mt-12 space-y-4">
               <button
                 onClick={() => setMode('create')}
-                className="btn-primary w-full text-lg"
+                className="btn-primary w-full text-lg py-5"
               >
                 Create Room
               </button>
               <button
                 onClick={() => setMode('join')}
-                className="btn-secondary w-full text-lg"
+                className="w-full text-lg py-4 text-amber-400 font-medium rounded-full border-2 border-amber-500/40 active:border-amber-500 active:scale-[0.98]"
               >
                 Join Room
               </button>
             </div>
 
-            {/* How it works */}
-            <div className="grid grid-cols-3 gap-4 pt-4 text-center">
-              <div className="space-y-2">
-                <div className="text-3xl">💕</div>
-                <p className="text-xs text-warmLight/50">Both swipe</p>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl">✨</div>
-                <p className="text-xs text-warmLight/50">Find matches</p>
-              </div>
-              <div className="space-y-2">
-                <div className="text-3xl">🍿</div>
-                <p className="text-xs text-warmLight/50">Watch tonight</p>
-              </div>
-            </div>
+            {/* Subtle footer — doesn't compete */}
+            <p className="mt-10 text-warmLight/30 text-xs text-center">
+              Like Tinder, but for deciding what to watch tonight.
+            </p>
           </div>
         )}
 
+        {/* ── CREATE ROOM ── */}
         {mode === 'create' && (
-          <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
-            {/* Back button */}
+          <div>
             <button
-              onClick={() => setMode('welcome')}
-              className="text-amber-400 active:text-amber-300 flex items-center gap-2 text-sm md:text-base min-h-[44px]"
+              onClick={() => { setMode('welcome'); setError(''); }}
+              className="text-amber-400 active:text-amber-300 flex items-center gap-2 text-sm min-h-[44px] mb-6"
             >
-              <span>←</span> Back
+              ← Back
             </button>
 
-            <div className="card space-y-5 md:space-y-6">
-              <div className="text-center">
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-warmLight mb-2">
-                  Create a Room
-                </h2>
-                <p className="text-warmLight/60 text-xs md:text-sm">
-                  Select your streaming services
-                </p>
-              </div>
+            <h2 className="text-3xl font-display font-bold text-warmLight mb-2">
+              Pick your services
+            </h2>
+            <p className="text-warmLight/50 text-sm mb-8">
+              We'll show movies available on these platforms.
+            </p>
 
-              {/* Streaming services grid - Touch-friendly */}
-              <div className="grid grid-cols-2 gap-2.5 md:gap-3">
-                {STREAMING_SERVICES.map(service => (
-                  <button
-                    key={service}
-                    onClick={() => toggleService(service)}
-                    className={`p-3 md:p-4 min-h-[56px] md:min-h-[60px] rounded-xl border-2 transition-all duration-200 active:scale-95 ${
-                      selectedServices.includes(service)
-                        ? 'bg-amber-500/20 border-amber-500 shadow-lg shadow-amber-500/20'
-                        : 'bg-warmDark/50 border-warmGray active:border-amber-500/50'
-                    }`}
-                  >
-                    <div className="font-medium text-warmLight text-sm md:text-base">{service}</div>
-                  </button>
-                ))}
-              </div>
-
-              {error && (
-                <div className="text-coral-400 text-xs md:text-sm text-center bg-coral-500/10 p-2.5 md:p-3 rounded-lg">
-                  {error}
-                </div>
-              )}
-
-              <button
-                onClick={handleCreateRoom}
-                disabled={loading || selectedServices.length === 0}
-                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
-              >
-                {loading ? 'Creating...' : 'Create Room & Get Code'}
-              </button>
-
-              <p className="text-[10px] md:text-xs text-warmLight/40 text-center">
-                You'll get a code to share with your partner
-              </p>
+            {/* Services grid — big tap targets, clear states */}
+            <div className="grid grid-cols-2 gap-3 mb-8">
+              {STREAMING_SERVICES.map(service => (
+                <button
+                  key={service}
+                  onClick={() => toggleService(service)}
+                  className={`py-4 px-4 rounded-xl border-2 font-medium text-base active:scale-[0.97] ${
+                    selectedServices.includes(service)
+                      ? 'bg-amber-500/20 border-amber-500 text-amber-400 shadow-lg shadow-amber-500/10'
+                      : 'bg-warmGray border-warmLight/25 text-warmLight/90'
+                  }`}
+                >
+                  {service}
+                </button>
+              ))}
             </div>
+
+            {error && (
+              <div className="text-coral-400 text-sm text-center bg-coral-500/10 p-3 rounded-xl mb-4">
+                {error}
+              </div>
+            )}
+
+            <button
+              onClick={handleCreateRoom}
+              disabled={loading || selectedServices.length === 0}
+              className="btn-primary w-full text-base py-4 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Creating...' : 'Create Room'}
+            </button>
+
+            <p className="text-warmLight/30 text-xs text-center mt-4">
+              You'll get a code to share with your partner.
+            </p>
           </div>
         )}
 
+        {/* ── JOIN ROOM ── */}
         {mode === 'join' && (
-          <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
-            {/* Back button */}
+          <div>
             <button
-              onClick={() => setMode('welcome')}
-              className="text-amber-400 active:text-amber-300 flex items-center gap-2 text-sm md:text-base min-h-[44px]"
+              onClick={() => { setMode('welcome'); setError(''); }}
+              className="text-amber-400 active:text-amber-300 flex items-center gap-2 text-sm min-h-[44px] mb-6"
             >
-              <span>←</span> Back
+              ← Back
             </button>
 
-            <div className="card space-y-5 md:space-y-6">
-              <div className="text-center">
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-warmLight mb-2">
-                  Join a Room
-                </h2>
-                <p className="text-warmLight/60 text-xs md:text-sm">
-                  Enter the code your partner shared
-                </p>
+            <h2 className="text-3xl font-display font-bold text-warmLight mb-2">
+              Enter the code
+            </h2>
+            <p className="text-warmLight/50 text-sm mb-8">
+              Your partner's room code — 6 characters.
+            </p>
+
+            <input
+              type="text"
+              placeholder="WOLF42"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+              className="w-full text-center text-3xl tracking-[0.3em] font-bold uppercase py-5 mb-6 rounded-2xl"
+              maxLength={6}
+              autoFocus
+            />
+
+            {error && (
+              <div className="text-coral-400 text-sm text-center bg-coral-500/10 p-3 rounded-xl mb-4">
+                {error}
               </div>
+            )}
 
-              <div className="space-y-3 md:space-y-4">
-                <input
-                  type="text"
-                  placeholder="WOLF42"
-                  value={roomCode}
-                  onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                  className="w-full text-center text-xl md:text-2xl tracking-widest font-bold uppercase"
-                  maxLength={6}
-                />
-
-                {error && (
-                  <div className="text-coral-400 text-xs md:text-sm text-center bg-coral-500/10 p-2.5 md:p-3 rounded-lg">
-                    {error}
-                  </div>
-                )}
-
-                <button
-                  onClick={handleJoinRoom}
-                  disabled={loading || !roomCode.trim()}
-                  className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
-                >
-                  {loading ? 'Joining...' : 'Join Room'}
-                </button>
-              </div>
-
-              <div className="pt-3 md:pt-4 border-t border-warmGray">
-                <p className="text-[10px] md:text-xs text-warmLight/40 text-center">
-                  Room codes are 6 characters long
-                </p>
-              </div>
-            </div>
+            <button
+              onClick={handleJoinRoom}
+              disabled={loading || !roomCode.trim()}
+              className="btn-primary w-full text-base py-4 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Joining...' : 'Join Room'}
+            </button>
           </div>
         )}
       </div>

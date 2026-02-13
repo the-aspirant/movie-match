@@ -131,9 +131,9 @@ input {
   @apply bg-warmGray text-warmLight px-4 py-3 rounded-xl border-2 border-warmGray focus:border-amber-500 focus:outline-none transition-colors min-h-[44px];
 }
 
-/* Smooth transitions */
-* {
-  @apply transition-colors duration-200;
+/* Only animate what needs animating */
+button, a, input {
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 /* Mobile-first utilities */

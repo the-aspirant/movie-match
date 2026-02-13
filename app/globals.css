@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-sans: 'DM Sans', sans-serif;
+  
+  --color-warmDark: #1a1412;
+  --color-warmGray: #2d2520;
+  --color-warmLight: #f5f1ed;
+  
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  
+  --color-coral-400: #fb7185;
+  --color-coral-500: #f43f5e;
+  --color-coral-600: #e11d48;
+  
+  --color-gold-400: #fcd34d;
+  --color-gold-500: #fbbf24;
+  --color-gold-600: #f59e0b;
+  
+  --animate-slide-out-left: slide-out-left 0.3s ease-in;
+  --animate-slide-out-right: slide-out-right 0.3s ease-in;
+  --animate-match-glow: match-glow 1s ease-out infinite;
+  --animate-confetti-fall: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes slide-out-left {
+  0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateX(-150%) rotate(-20deg); opacity: 0; }
+}
+
+@keyframes slide-out-right {
+  0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateX(150%) rotate(20deg); opacity: 0; }
+}
+
+@keyframes match-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.8); }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+:root {
+  --background: #1a1412;
+  --foreground: #f5f1ed;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2520;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f59e0b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d97706;
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Subtle gradient background */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  z-index: -1;
+  background: radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(244, 63, 94, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Button styles - Touch-friendly (min 44px height) */
+.btn-primary {
+  @apply bg-gradient-to-r from-amber-500 to-coral-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 min-h-[44px];
+}
+
+.btn-secondary {
+  @apply bg-warmGray text-warmLight font-medium px-6 py-3 rounded-full border-2 border-amber-500/30 hover:border-amber-500 transition-all duration-300 active:scale-95 min-h-[44px];
+}
+
+/* Card styles */
+.card {
+  @apply bg-warmGray rounded-3xl p-6 shadow-2xl border border-amber-500/10;
+}
+
+/* Input styles - Touch-friendly */
+input {
+  @apply bg-warmGray text-warmLight px-4 py-3 rounded-xl border-2 border-warmGray focus:border-amber-500 focus:outline-none transition-colors min-h-[44px];
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Mobile-first utilities */
+@media (hover: none) {
+  .hover\:scale-105:hover {
+    transform: scale(1);
+  }
+  
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Prevent overscroll/bounce on mobile */
+html,
+body {
+  overscroll-behavior-y: none;
+  touch-action: pan-x pan-y;
+  min-height: 100dvh;
+}
+
+/* Safe area insets for mobile notches */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
